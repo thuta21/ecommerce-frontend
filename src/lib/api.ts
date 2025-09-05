@@ -217,7 +217,7 @@ export interface Order {
   status: string;
   shipping_address: string;
   payment_method: string;
-  order_items: OrderItem[];
+  items: OrderItem[];
   created_at: string;
   updated_at: string;
 }
