@@ -1,4 +1,4 @@
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://54.179.67.81/api';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://ecommerce.thutaminthway.xyz/api';
 
 interface ApiResponse<T> {
   data: T;
