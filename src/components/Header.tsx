@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { ShoppingCart, User, LogOut, Search } from 'lucide-react';
+import { ShoppingCart, User, LogOut, Search, Notebook } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useAuth } from '@/contexts/AuthContext';
@@ -78,8 +78,11 @@ export default function Header() {
                   </Button>
                 </Link>
 
-                <Link href="/orders" className="hidden sm:block">
-                  <Button variant="ghost" size="sm">Orders</Button>
+                <Link href="/orders">
+                  <Button variant="ghost" size="sm" className="p-2 sm:px-4">
+                    <span className="hidden sm:inline">Orders</span>
+                    <Notebook className="sm:hidden h-4 w-4" />
+                  </Button>
                 </Link>
 
                 <div className="hidden sm:flex items-center gap-2">
