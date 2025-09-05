@@ -59,7 +59,7 @@ function ProductsPageContent() {
 
   if (loading) {
     return (
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-3 sm:px-4 py-6 sm:py-8">
         <div className="text-center">Loading products...</div>
       </div>
     );
@@ -67,30 +67,30 @@ function ProductsPageContent() {
 
   if (error) {
     return (
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-3 sm:px-4 py-6 sm:py-8">
         <div className="text-center text-red-600">Error: {error}</div>
       </div>
     );
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="flex flex-col gap-6">
+    <div className="container mx-auto px-3 sm:px-4 py-6 sm:py-8">
+      <div className="flex flex-col gap-4 sm:gap-6">
         {/* Mobile/Desktop Filters */}
         <div className="lg:hidden">
           <ProductFilters />
         </div>
         
-        <div className="flex flex-col lg:flex-row gap-8">
+        <div className="flex flex-col lg:flex-row gap-6 sm:gap-8">
           {/* Desktop Sidebar Filters */}
           <aside className="hidden lg:block lg:w-64 flex-shrink-0">
             <ProductFilters />
           </aside>
 
-          <main className="flex-1">
-          <div className="mb-6">
-            <h1 className="text-3xl font-bold mb-2">Products</h1>
-            <p className="text-gray-600">
+          <main className="flex-1 min-w-0">
+          <div className="mb-4 sm:mb-6">
+            <h1 className="text-2xl sm:text-3xl font-bold mb-2">Products</h1>
+            <p className="text-gray-600 text-sm sm:text-base">
               {totalItems > 0 ? (
                 <>Showing {showingFrom}-{showingTo} of {totalItems} products</>
               ) : (
@@ -100,12 +100,12 @@ function ProductsPageContent() {
           </div>
 
           {products.length === 0 ? (
-            <div className="text-center py-12">
-              <p className="text-gray-500 text-lg">No products found.</p>
+            <div className="text-center py-8 sm:py-12">
+              <p className="text-gray-500 text-base sm:text-lg">No products found.</p>
             </div>
           ) : (
             <>
-              <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4 md:gap-6">
+              <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4 md:gap-6">
                 {products.map((product) => (
                   <ProductCard key={product.id} product={product} />
                 ))}
@@ -133,7 +133,7 @@ function ProductsPageContent() {
 
 function ProductsPageLoading() {
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="container mx-auto px-3 sm:px-4 py-6 sm:py-8">
       <div className="text-center">Loading products...</div>
     </div>
   );

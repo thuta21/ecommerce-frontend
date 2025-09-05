@@ -29,7 +29,7 @@ export default function RegisterPage() {
   // Show loading while navigation is happening
   if (isAuthenticated) {
     return (
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-3 sm:px-4 py-6 sm:py-8">
         <div className="text-center">Redirecting...</div>
       </div>
     );
@@ -64,15 +64,15 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8 max-w-md">
+    <div className="container mx-auto px-3 sm:px-4 py-6 sm:py-8 max-w-md">
       <Card>
         <CardHeader>
-          <CardTitle className="text-center text-2xl">Register</CardTitle>
+          <CardTitle className="text-center text-xl sm:text-2xl">Register</CardTitle>
         </CardHeader>
-        <CardContent>
+        <CardContent className="p-4 sm:p-6">
           <form onSubmit={handleSubmit} className="space-y-4">
             {error && (
-              <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded">
+              <div className="bg-red-50 border border-red-200 text-red-700 px-3 sm:px-4 py-2 sm:py-3 rounded text-sm">
                 {error}
               </div>
             )}

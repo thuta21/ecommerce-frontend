@@ -35,7 +35,7 @@ export default function CheckoutPage() {
   // Show loading while navigation is happening
   if (!isAuthenticated || items.length === 0) {
     return (
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-3 sm:px-4 py-6 sm:py-8">
         <div className="text-center">Redirecting...</div>
       </div>
     );
@@ -62,19 +62,19 @@ export default function CheckoutPage() {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-8">Checkout</h1>
+    <div className="container mx-auto px-3 sm:px-4 py-6 sm:py-8">
+      <h1 className="text-2xl sm:text-3xl font-bold mb-6 sm:mb-8">Checkout</h1>
 
-      <div className="grid lg:grid-cols-2 gap-8">
+      <div className="grid lg:grid-cols-2 gap-6 sm:gap-8">
         <div>
           <Card>
             <CardHeader>
-              <CardTitle>Shipping & Payment</CardTitle>
+              <CardTitle className="text-lg sm:text-xl">Shipping & Payment</CardTitle>
             </CardHeader>
-            <CardContent>
-              <form onSubmit={handleSubmit} className="space-y-6">
+            <CardContent className="p-4 sm:p-6">
+              <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
                 {error && (
-                  <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded">
+                  <div className="bg-red-50 border border-red-200 text-red-700 px-3 sm:px-4 py-2 sm:py-3 rounded text-sm">
                     {error}
                   </div>
                 )}
@@ -89,7 +89,7 @@ export default function CheckoutPage() {
                     onChange={(e) => setShippingAddress(e.target.value)}
                     required
                     rows={4}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary text-sm sm:text-base"
                     placeholder="Enter your complete shipping address"
                   />
                 </div>
@@ -98,14 +98,14 @@ export default function CheckoutPage() {
                   <label className="block text-sm font-medium mb-2">
                     Payment Method
                   </label>
-                  <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                  <div className="p-3 sm:p-4 bg-blue-50 border border-blue-200 rounded-lg">
                     <div className="flex items-center gap-3">
-                      <div className="w-4 h-4 bg-blue-500 rounded-full flex items-center justify-center">
+                      <div className="w-4 h-4 bg-blue-500 rounded-full flex items-center justify-center flex-shrink-0">
                         <div className="w-2 h-2 bg-white rounded-full"></div>
                       </div>
                       <div>
-                        <p className="font-medium text-blue-900">Cash on Delivery</p>
-                        <p className="text-sm text-blue-700">Pay when your order is delivered</p>
+                        <p className="font-medium text-blue-900 text-sm sm:text-base">Cash on Delivery</p>
+                        <p className="text-xs sm:text-sm text-blue-700">Pay when your order is delivered</p>
                       </div>
                     </div>
                   </div>
@@ -116,7 +116,7 @@ export default function CheckoutPage() {
 
                 <Button
                   type="submit"
-                  className="w-full"
+                  className="w-full text-sm sm:text-base"
                   size="lg"
                   disabled={isLoading}
                 >
@@ -128,35 +128,35 @@ export default function CheckoutPage() {
         </div>
 
         <div>
-          <Card>
+          <Card className="sticky top-4">
             <CardHeader>
-              <CardTitle>Order Summary</CardTitle>
+              <CardTitle className="text-lg sm:text-xl">Order Summary</CardTitle>
             </CardHeader>
-            <CardContent className="space-y-4">
+            <CardContent className="space-y-3 sm:space-y-4 p-4 sm:p-6">
               {items.map((item) => (
-                <div key={item.id} className="flex justify-between items-center">
-                  <div className="flex-1">
-                    <p className="font-medium">{item.product.name}</p>
-                    <p className="text-sm text-gray-600">
+                <div key={item.id} className="flex justify-between items-start gap-2">
+                  <div className="flex-1 min-w-0">
+                    <p className="font-medium text-sm sm:text-base line-clamp-2">{item.product.name}</p>
+                    <p className="text-xs sm:text-sm text-gray-600">
                       {formatPrice(item.product.price)} × {item.quantity}
                     </p>
                   </div>
-                  <p className="font-medium">
+                  <p className="font-medium text-sm sm:text-base flex-shrink-0">
                     {formatPrice(item.product.price * item.quantity)}
                   </p>
                 </div>
               ))}
 
-              <div className="border-t pt-4 space-y-2">
-                <div className="flex justify-between">
+              <div className="border-t pt-3 sm:pt-4 space-y-2">
+                <div className="flex justify-between text-sm sm:text-base">
                   <span>Subtotal</span>
                   <span>{formatPrice(totalAmount)}</span>
                 </div>
-                <div className="flex justify-between">
+                <div className="flex justify-between text-sm sm:text-base">
                   <span>Shipping</span>
                   <span>Free</span>
                 </div>
-                <div className="flex justify-between font-semibold text-lg">
+                <div className="flex justify-between font-semibold text-base sm:text-lg">
                   <span>Total</span>
                   <span>{formatPrice(totalAmount)}</span>
                 </div>
