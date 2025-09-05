@@ -1,13 +1,13 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { api, Product, PaginatedResponse } from '@/lib/api';
 import ProductCard from '@/components/ProductCard';
 import ProductFilters from '@/components/ProductFilters';
 import Pagination from '@/components/Pagination';
 
-export default function ProductsPage() {
+function ProductsPageContent() {
   const [productsData, setProductsData] = useState<PaginatedResponse<Product> | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -15,7 +15,7 @@ export default function ProductsPage() {
   const router = useRouter();
 
   const currentPage = parseInt(searchParams.get('page') || '1');
-  const perPage = 5; // Products per page
+  const perPage = 12; // Products per page
 
   useEffect(() => {
     fetchProducts();
@@ -128,5 +128,21 @@ export default function ProductsPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+function ProductsPageLoading() {
+  return (
+    <div className="container mx-auto px-4 py-8">
+      <div className="text-center">Loading products...</div>
+    </div>
+  );
+}
+
+export default function ProductsPage() {
+  return (
+    <Suspense fallback={<ProductsPageLoading />}>
+      <ProductsPageContent />
+    </Suspense>
   );
 }
