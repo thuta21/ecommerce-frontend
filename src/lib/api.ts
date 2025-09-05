@@ -56,30 +56,89 @@ class ApiClient {
     });
 
     if (!response.ok) {
-      const error = await response.json().catch(() => ({ message: 'Network error' }));
-      throw new Error(error.message || `HTTP error! status: ${response.status}`);
+      let errorData;
+      try {
+        errorData = await response.json();
+      } catch {
+        // If response is not JSON, create a generic error
+        errorData = { message: this.getStatusMessage(response.status) };
+      }
+
+      // Create error object with both message and errors (for Laravel validation)
+      const error = {
+        message: errorData.message || this.getStatusMessage(response.status),
+        errors: errorData.errors || null,
+        status: response.status
+      };
+
+      throw error;
     }
 
     return response.json();
   }
 
+  private getStatusMessage(status: number): string {
+    switch (status) {
+      case 400:
+        return 'Bad request. Please check your input.';
+      case 401:
+        return 'Invalid email or password.';
+      case 403:
+        return 'Access forbidden.';
+      case 404:
+        return 'Resource not found.';
+      case 422:
+        return 'Please check the form for errors.';
+      case 500:
+        return 'Server error. Please try again later.';
+      case 503:
+        return 'Service temporarily unavailable.';
+      default:
+        return 'An unexpected error occurred. Please try again.';
+    }
+  }
+
   // Auth endpoints
   async login(email: string, password: string) {
-    const response = await this.request<{ token: string; user: User }>('/login', {
-      method: 'POST',
-      body: JSON.stringify({ email, password }),
-    });
-    this.setToken(response.token);
-    return response;
+    try {
+      const response = await this.request<{ token: string; user: User }>('/login', {
+        method: 'POST',
+        body: JSON.stringify({ email, password }),
+      });
+      this.setToken(response.token);
+      return response;
+    } catch (error: any) {
+      // Handle specific login errors
+      if (error.status === 401) {
+        throw {
+          message: 'Invalid email or password. Please try again.',
+          errors: error.errors,
+          status: error.status
+        };
+      }
+      throw error;
+    }
   }
 
   async register(name: string, email: string, password: string, password_confirmation: string) {
-    const response = await this.request<{ token: string; user: User }>('/register', {
-      method: 'POST',
-      body: JSON.stringify({ name, email, password, password_confirmation }),
-    });
-    this.setToken(response.token);
-    return response;
+    try {
+      const response = await this.request<{ token: string; user: User }>('/register', {
+        method: 'POST',
+        body: JSON.stringify({ name, email, password, password_confirmation }),
+      });
+      this.setToken(response.token);
+      return response;
+    } catch (error: any) {
+      // Handle specific registration errors
+      if (error.status === 422) {
+        throw {
+          message: error.message || 'Please fix the errors below.',
+          errors: error.errors,
+          status: error.status
+        };
+      }
+      throw error;
+    }
   }
 
   async logout() {

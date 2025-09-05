@@ -191,13 +191,13 @@ export default function ProductFilters() {
                   Default
                 </div>
               </SelectItem>
-              <SelectItem value="price_asc" className="hover:bg-green-50 focus:bg-green-50 text-gray-900 cursor-pointer">
+              <SelectItem value="asc" className="hover:bg-green-50 focus:bg-green-50 text-gray-900 cursor-pointer">
                 <div className="flex items-center gap-2">
                   <div className="w-2 h-2 rounded-full bg-green-500"></div>
                   Price: Low to High
                 </div>
               </SelectItem>
-              <SelectItem value="price_desc" className="hover:bg-red-50 focus:bg-red-50 text-gray-900 cursor-pointer">
+              <SelectItem value="desc" className="hover:bg-red-50 focus:bg-red-50 text-gray-900 cursor-pointer">
                 <div className="flex items-center gap-2">
                   <div className="w-2 h-2 rounded-full bg-red-500"></div>
                   Price: High to Low

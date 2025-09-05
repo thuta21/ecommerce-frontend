@@ -15,6 +15,7 @@ export default function RegisterPage() {
   const [passwordConfirmation, setPasswordConfirmation] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
+  const [validationErrors, setValidationErrors] = useState<{[key: string]: string[]}>({});
   const { register, isAuthenticated } = useAuth();
   const router = useRouter();
 
@@ -38,6 +39,7 @@ export default function RegisterPage() {
     e.preventDefault();
     setIsLoading(true);
     setError('');
+    setValidationErrors({});
 
     if (password !== passwordConfirmation) {
       setError('Passwords do not match');
@@ -49,7 +51,13 @@ export default function RegisterPage() {
       await register(name, email, password, passwordConfirmation);
       router.push('/');
     } catch (error: any) {
-      setError(error.message || 'Registration failed');
+      // Check if it's a validation error from Laravel
+      if (error.errors && typeof error.errors === 'object') {
+        setValidationErrors(error.errors);
+        setError(error.message || 'Please fix the validation errors below.');
+      } else {
+        setError(error.message || 'Registration failed. Please try again.');
+      }
     } finally {
       setIsLoading(false);
     }
@@ -78,9 +86,16 @@ export default function RegisterPage() {
                 type="text"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                required
                 placeholder="Enter your name"
+                className={validationErrors.name ? 'border-red-500' : ''}
               />
+              {validationErrors.name && (
+                <div className="mt-1 text-sm text-red-600">
+                  {validationErrors.name.map((error, index) => (
+                    <div key={index}>{error}</div>
+                  ))}
+                </div>
+              )}
             </div>
 
             <div>
@@ -92,9 +107,16 @@ export default function RegisterPage() {
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                required
                 placeholder="Enter your email"
+                className={validationErrors.email ? 'border-red-500' : ''}
               />
+              {validationErrors.email && (
+                <div className="mt-1 text-sm text-red-600">
+                  {validationErrors.email.map((error, index) => (
+                    <div key={index}>{error}</div>
+                  ))}
+                </div>
+              )}
             </div>
 
             <div>
@@ -106,9 +128,16 @@ export default function RegisterPage() {
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                required
                 placeholder="Enter your password"
+                className={validationErrors.password ? 'border-red-500' : ''}
               />
+              {validationErrors.password && (
+                <div className="mt-1 text-sm text-red-600">
+                  {validationErrors.password.map((error, index) => (
+                    <div key={index}>{error}</div>
+                  ))}
+                </div>
+              )}
             </div>
 
             <div>
@@ -120,9 +149,16 @@ export default function RegisterPage() {
                 type="password"
                 value={passwordConfirmation}
                 onChange={(e) => setPasswordConfirmation(e.target.value)}
-                required
                 placeholder="Confirm your password"
+                className={validationErrors.password_confirmation ? 'border-red-500' : ''}
               />
+              {validationErrors.password_confirmation && (
+                <div className="mt-1 text-sm text-red-600">
+                  {validationErrors.password_confirmation.map((error, index) => (
+                    <div key={index}>{error}</div>
+                  ))}
+                </div>
+              )}
             </div>
 
             <Button type="submit" className="w-full" disabled={isLoading}>

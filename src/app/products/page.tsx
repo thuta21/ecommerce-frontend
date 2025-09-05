@@ -15,7 +15,7 @@ function ProductsPageContent() {
   const router = useRouter();
 
   const currentPage = parseInt(searchParams.get('page') || '1');
-  const perPage = 12; // Products per page
+  const perPage = 5; // Products per page
 
   useEffect(() => {
     fetchProducts();

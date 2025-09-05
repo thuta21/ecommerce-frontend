@@ -13,6 +13,7 @@ export default function LoginPage() {
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
+  const [validationErrors, setValidationErrors] = useState<{[key: string]: string[]}>({});
   const { login, isAuthenticated } = useAuth();
   const router = useRouter();
 
@@ -36,12 +37,19 @@ export default function LoginPage() {
     e.preventDefault();
     setIsLoading(true);
     setError('');
+    setValidationErrors({});
 
     try {
       await login(email, password);
       router.push('/');
     } catch (error: any) {
-      setError(error.message || 'Login failed');
+      // Check if it's a validation error from Laravel
+      if (error.errors && typeof error.errors === 'object') {
+        setValidationErrors(error.errors);
+        setError(error.message || 'Please fix the validation errors below.');
+      } else {
+        setError(error.message || 'Login failed. Please try again.');
+      }
     } finally {
       setIsLoading(false);
     }
@@ -70,9 +78,16 @@ export default function LoginPage() {
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                required
                 placeholder="Enter your email"
+                className={validationErrors.email ? 'border-red-500' : ''}
               />
+              {validationErrors.email && (
+                <div className="mt-1 text-sm text-red-600">
+                  {validationErrors.email.map((error, index) => (
+                    <div key={index}>{error}</div>
+                  ))}
+                </div>
+              )}
             </div>
 
             <div>
@@ -84,9 +99,16 @@ export default function LoginPage() {
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                required
                 placeholder="Enter your password"
+                className={validationErrors.password ? 'border-red-500' : ''}
               />
+              {validationErrors.password && (
+                <div className="mt-1 text-sm text-red-600">
+                  {validationErrors.password.map((error, index) => (
+                    <div key={index}>{error}</div>
+                  ))}
+                </div>
+              )}
             </div>
 
             <Button type="submit" className="w-full" disabled={isLoading}>
