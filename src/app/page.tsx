@@ -20,21 +20,6 @@ export default function Home() {
           </Button>
         </Link>
       </section>
-
-      {/* CTA Section */}
-      <section className="text-center py-8 sm:py-12 bg-gray-50 rounded-lg px-4 sm:px-8">
-        <h2 className="text-2xl sm:text-3xl font-bold mb-3 sm:mb-4 text-gray-900">
-          Ready to Start Shopping?
-        </h2>
-        <p className="text-gray-600 mb-4 sm:mb-6 max-w-md mx-auto text-sm sm:text-base">
-          Browse our collection of products and find what you're looking for.
-        </p>
-        <Link href="/products">
-          <Button size="lg" variant="outline" className="text-sm sm:text-base px-6 sm:px-8">
-            Explore Products
-          </Button>
-        </Link>
-      </section>
     </div>
   );
 }
