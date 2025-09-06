@@ -17,6 +17,7 @@ export default function CheckoutPage() {
   const [paymentMethod, setPaymentMethod] = useState('cash_on_delivery');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
+  const [success, setSuccess] = useState(false);
   const router = useRouter();
 
   // Handle navigation in useEffect to avoid setState during render
@@ -45,6 +46,7 @@ export default function CheckoutPage() {
     e.preventDefault();
     setIsLoading(true);
     setError('');
+    setSuccess(false);
 
     try {
       const order = await api.createOrder({
@@ -53,7 +55,12 @@ export default function CheckoutPage() {
       });
 
       clearCart();
-      router.push(`/orders/${order.data.id}`);
+      setSuccess(true);
+      
+      // Navigate to the orders page after successful order creation
+      setTimeout(() => {
+        router.push('/orders');
+      }, 1500);
     } catch (error: any) {
       setError(error.message || 'Failed to create order');
     } finally {
@@ -76,6 +83,12 @@ export default function CheckoutPage() {
                 {error && (
                   <div className="bg-red-50 border border-red-200 text-red-700 px-3 sm:px-4 py-2 sm:py-3 rounded text-sm">
                     {error}
+                  </div>
+                )}
+                
+                {success && (
+                  <div className="bg-green-50 border border-green-200 text-green-700 px-3 sm:px-4 py-2 sm:py-3 rounded text-sm">
+                    Order placed successfully! Redirecting to your orders...
                   </div>
                 )}
 
@@ -118,9 +131,9 @@ export default function CheckoutPage() {
                   type="submit"
                   className="w-full text-sm sm:text-base"
                   size="lg"
-                  disabled={isLoading}
+                  disabled={isLoading || success}
                 >
-                  {isLoading ? 'Processing...' : 'Place Order'}
+                  {isLoading ? 'Processing...' : success ? 'Order Placed!' : 'Place Order'}
                 </Button>
               </form>
             </CardContent>
