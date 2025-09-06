@@ -77,7 +77,7 @@ export default function ProductCard({ product }: ProductCardProps) {
           </span>
         </div>
       </CardContent>
-      <CardFooter className="p-3 sm:p-4 pt-0 space-y-2 sm:space-y-3">
+      <CardFooter className="p-3 sm:p-4 pt-0 space-y-2 sm:space-y-3 sm:block">
         {/* Quantity Selector */}
         {product.stock_quantity > 0 && (
           <div className="w-full flex items-center justify-center gap-2 sm:gap-3">
